@@ -1,1 +1,7 @@
-NGROK_TUNNEL_URL = 'https://62d8-54-38-53-57.ngrok-free.app'
+NGROK_TUNNEL_URL = 'https://d2e5-95-32-128-45.ngrok-free.app'
+
+# Mysql config
+host = "localhost"
+user = "root"
+password = "kandaurov"
+db_name = "rent_avito_bot"
