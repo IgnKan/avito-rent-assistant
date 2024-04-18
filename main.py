@@ -1,3 +1,5 @@
+import hashlib
+
 from fastapi import FastAPI, Body
 from typing import Any
 from pydantic import BaseModel
@@ -7,7 +9,7 @@ import orjson
 from fastapi import Response
 
 from avito.schema.messenger.methods import SendMessage, ChatRead, PostWebhook
-from avito.schema.messenger.models import WebhookMessage, MessageToSend
+from avito.schema.messenger.models import WebhookMessage, MessageToSend, MessageContent
 from bot import HotelBot
 from config import NGROK_TUNNEL_URL
 import os
@@ -27,6 +29,26 @@ WEBHOOK_URL = f"{NGROK_TUNNEL_URL}{WEBHOOK_PATH}"
 avito = Avito(TOKEN, CLIENT_ID, CLIENT_SECRET)
 gpt = YandexGPT(folder_id="b1gmokkhlfagg82cirvf")
 bot = HotelBot(avito=avito, yandexgpt=gpt)
+
+handled_webhooks = {}
+
+def generate_webhook_hash(author_id, timestamp, text):
+    # Конкатенация значений ключевых полей вебхука
+    combined_data = f"{author_id}_{timestamp}_{text}"
+
+    # Хэширование комбинированных данных с использованием SHA-256
+    webhook_hash = hashlib.sha256(combined_data.encode()).hexdigest()
+
+    return webhook_hash
+
+def need_to_handle_webhook(webhook_hash):
+    if webhook_hash in handled_webhooks:
+        print(f"Webhook {webhook_hash} has already been handled. Skipping.")
+        return False
+    else:
+        print(f"Handling webhook {webhook_hash}")
+        handled_webhooks[webhook_hash] = True
+        return True
 @app.on_event("startup")
 async def on_startup():
     # Подключаем бота к базе данных sql
@@ -55,10 +77,13 @@ async def on_startup():
 async def bot_webhook(body = Body()):
     webhook_message = body['payload']['value']
     received_message = WebhookMessage.model_validate(webhook_message, context={"avito": avito})
+
     # Проверяем полученные данные с вебхука. Необходимо, чтобы сообщение было от пользователя, а нет от нас
-    if received_message.author_id != ME_ID:
-        #Формируем ответное сообщение
-        await bot.process_message(message=received_message)
+    if received_message.author_id != ME_ID and received_message.content.text != None and received_message.read ==  None :
+        # webhook_hash = generate_webhook_hash(author_id=received_message.author_id, timestamp=received_message.created, text=received_message.content.text)
+        if need_to_handle_webhook(received_message.id):
+            #Формируем ответное сообщение
+            await bot.process_message(message=received_message)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, debug=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000, debug=False)

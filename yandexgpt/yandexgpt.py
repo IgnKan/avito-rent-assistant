@@ -24,8 +24,8 @@ class YandexGPT:
     def generate_promt(self,
                         message: list,
                         stream: bool = False,
-                        temperature: float = 0,
-                        max_tokens: int = 100) -> dict:
+                        temperature: float = 0.1,
+                        max_tokens: int = 4000) -> dict:
         prompt = {
             "modelUri": f"gpt://{self.folder_id}/{self.model}",
             "completionOptions": {
@@ -40,8 +40,8 @@ class YandexGPT:
     def make_request(self,
                      user_message: list,
                      stream: bool = False,
-                     temperature: float = 0,
-                     max_tokens: int = 2000
+                     temperature: float = 0.1,
+                     max_tokens: int = 4000
                      ) -> str:
         headers = {
             "Content-Type": "application/json",

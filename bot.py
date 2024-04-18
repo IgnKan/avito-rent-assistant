@@ -28,152 +28,136 @@ class HotelBot:
     def __init__(self, avito: Avito, yandexgpt: YandexGPT):
         self.avito = avito
         self.yandexgpt = yandexgpt
-        self.bot_message: str | None = None
+        self.bot_message: str | None = "Не могу понять, что вы хотите. Попробуйте сформулировать иначе"
         self.database_connection = None
-        self.state = None
+        self.message_from_user: str | None = None
 
     def __del__(self):
         self.database_connection.close()
+
+    # Этот костыль-декоратор нужен чтобы решать выполянть определнное действие пользователя (запускать функцию или нет) взависимости от состояния пользователя и его команды
     def message_handler(command, state=None):
-        def inner_decorator(f):
-            def wraped(*args):
-                user_command = args[0]
-                user_state = args[1]
+        def inner_decorator(func):
+            def wrapped(*args, **kwargs):
+                user_command = kwargs['command']
+                user_state = kwargs['state']
+                user_id = kwargs['user_id']
                 if state:
-                    if (state.chat_begin.name != user_state):
-                        None
-                elif (user_command.find(command) != -1):
-                    f()
+                    if state != user_state:
+                        return
+                    elif user_command.find(command) != -1:
+                        func(*args, command=user_command, state=user_state, user_id=user_id)
+                elif user_command.find(command) != -1:
+                    func(*args, command=user_command, state=user_state, user_id=user_id)
+
+            return wrapped
 
         return inner_decorator
 
-    def process_message(self, message: WebhookMessage):
+    async def process_message(self, message: WebhookMessage):
         message_text = message.content.text
-        state = await self.get_user_chat_position(user_id=message.author_id)
+        self.message_from_user = message_text
+        state = self.get_user_chat_position(user_id=message.author_id)
 
         if state == None:
             with open('messages.json', 'r', encoding='utf-8') as file:
                 messages = json.load(file)
-            self.bot_message = messages['greetings']['welcome_message_for_new_user'].replace('\\n', '\n')
-            await self.set_user_chat_position(user_id=message.author_id, chat_position=ProfileStatesGroup.chat_begin.name)
-            await self.send_bot_message(message_from_webhook=message, read_chat=True)
+            bot_message = messages['greetings']['welcome_message_for_new_user'].replace('\\n', '\n')
+            self.set_user_chat_position(user_id=message.author_id, chat_position=ProfileStatesGroup.chat_begin.name)
+            self.send_bot_message(message_from_webhook=message, read_chat=True, bot_message=bot_message)
             return
         else:
-            message_from_user = await self.define_user_action(message_from_user=message_text)
-            await self.start_pooling(message_from_user=message_from_user, state=state, user_id=message.author_id)
-            await self.send_bot_message(message_from_webhook=message, read_chat=True)
+            user_action = self.define_user_action(message_from_user=message_text)
+            self.start_pooling(message_from_user=user_action, state=state, user_id=message.author_id)
+            if state != ProfileStatesGroup.user_off_assistent.name:
+                await self.send_bot_message(message_from_webhook=message, read_chat=True)
 
-    def start_pooling(self, message_from_user, state, user_id):
-        await self.start_assistent(command=message_from_user, state=state, user_id=user_id)
-        await self.off_assisstent(command=message_from_user, state=state, user_id=user_id)
-
-    @message_handler(state=ProfileStatesGroup.user_off_assistent.name, command='Активировать ассистента')
-    async def start_assistent(self, command, state, user_id):
-            self.bot_message = "Ассистент активирован!"
-            await self.set_user_chat_position(user_id=user_id,
-                                              chat_position=ProfileStatesGroup.chat_begin.name)
+    @message_handler(state=ProfileStatesGroup.user_off_assistent.name, command='Включить ассистента')
+    def start_assistent(self, command, state, user_id):
+        self.bot_message = "Ассистент активирован!"
+        self.set_user_chat_position(user_id=user_id,
+                                    chat_position=ProfileStatesGroup.chat_begin.name)
+        return
 
     @message_handler(command='Отключить ассистента')
-    async def off_assisstent(self, command, state, user_id):
+    def off_assisstent(self, command, state, user_id):
         self.bot_message = "Асситент отключен! Чат только с владельцем. Включить ассистента команда (\"/assistent_on\") или сообщение по типу: Включить ассистента"
-        await self.set_user_chat_position(user_id=user_id,
-                                          chat_position=ProfileStatesGroup.user_off_assistent.name)
+        self.set_user_chat_position(user_id=user_id,
+                                    chat_position=ProfileStatesGroup.user_off_assistent.name)
+        return
 
     @message_handler(command='Сбросить состояние ассистента')
-    async def reset_asisstent(self, command, state, user_id):
+    def reset_asisstent(self, command, state, user_id):
         self.bot_message = "Ассистент сброшен!"
-        await self.set_user_chat_position(user_id=user_id,
-                                          chat_position=ProfileStatesGroup.chat_begin.name)
+        self.set_user_chat_position(user_id=user_id,
+                                    chat_position=ProfileStatesGroup.chat_begin.name)
+        return
 
-    # async def create_booking(self, commands=['Новое бронирование'], state=ProfileStatesGroup):
-    #     if state != ProfileStatesGroup.chat_begin.name:
-    #         None
-    #     else:
-    #         self.bot_message = "Создание нового бронирования: \n Какая дата вас интересует?"
-    #         await self.set_user_chat_position(user_id=user_id,
-    #                                         chat_position=ProfileStatesGroup.get_rent_date.name)
-    # async def get_rent_date(self, message, state=ProfileStatesGroup):
-    #     if state != ProfileStatesGroup.get_rent_date.name:
-    #         None
-    #     else:
-    #         rent_date = self.define_user_rent_date(message_from_user=message)
-    #         if rent_date:
-    #             if rent_date != 0:
-    # #                 Валидация введенной даты
-    #                 print("Валидация введенной даты")
-    #             else:
-    #                 print("Дата не ясна")
-    #
-    #
-    #
-    #
-    # # 1. Проверяем ввел ли пользователь команду. 2. Проверяем состояние чата с пользователем. 3. Обрабатываем все остальное
-    # async def process_message(self, message: WebhookMessage):
-    #     message_text = message.content.text
-    #     state = await self.get_user_chat_position(user_id=message.author_id)
-    #
-    #     # Проверяем новый ли это пользователь
-    #     if state == None:
-    #         with open('messages.json', 'r', encoding='utf-8') as file:
-    #             messages = json.load(file)
-    #         self.bot_message = messages['greetings']['welcome_message_for_new_user'].replace('\\n', '\n')
-    #         await self.set_user_chat_position(user_id=message.author_id, chat_position=ProfileStatesGroup.chat_begin.name)
-    #         await self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #         return
-    #
-    #     # Если пользователь отключил ассистента в чате
-    #     if user_chat_position == ProfileStatesGroup.user_off_assistent.name:
-    #         # Мы не помечаем сообщения прочитанными и не пишем ему ничего в ответ, пока он не введет команду для активации ассистента
-    #         message_from_user = await self.prepare_message(message_text)
-    #         user_want_to_activate_assistent = await self.user_want_to_activate_assistent(message_from_user=message_from_user)
-    #         if user_want_to_activate_assistent:
-    #             command = "/assistent_on"
-    #             await self.process_user_command(command=command, author_id=message.author_id)
-    #             await self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #             return
-    #         else:
-    #             return
-    #     # Ассистент активен
-    #     else:
-    #         # Проверяем не хочет ли пользователь отключить ассистента
-    #         user_want_to_deactivate_assistent = await self.user_want_to_activate_assistent(message_from_user=message_text)
-    #         if user_want_to_deactivate_assistent:
-    #             command = "/assistent_off"
-    #             await self.process_user_command(command=command, author_id=message.author_id)
-    #             await self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #             return
-    #         # Проверяем не хочет ли пользователь ассистента сбросить
-    #         user_want_to_reset_assistent = await self.user_want_to_reset_assistent(message_from_user=message_text)
-    #         if user_want_to_reset_assistent:
-    #             command = "/res"
-    #             await self.process_user_command(command=command, author_id=message.author_id)
-    #             await self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #             return
-    #         # Если другое то
-    #         # Проверяем на чем остановился пользователь при общении с ботом
-    #         if user_chat_position == ProfileStatesGroup.chat_begin.name:
-    #             # Удаляем лишние пробелы из сообщения пользователя
-    #             command = await self.prepare_message(message=message_text)
-    #             # Обрабатываем команду пользователя
-    #             await self.process_user_command(command=command, author_id=message.author_id)
-    #             await self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #         # Игнорируем любые запросы пользователя пока он не введет дату
-    #         elif user_chat_position == ProfileStatesGroup.get_rent_date.name:
-    #             user_rent_date = await self.define_user_rent_date(message_from_user=message_text)
-    #             if user_rent_date != 0:
-    #                 self.bot_message = "Вас интересует период: {period}? Да / Нет".format(period=user_rent_date)
-    #                 await self.set_user_chat_position(user_id=message.author_id,
-    #                                                   chat_position=ProfileStatesGroup.confirm_rent_date.name)
-    #                 self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #                 return
-    #             else:
-    #                 self.bot_message = "Введите интересующий вас переиод точнее, либо по другому. Система не может распознать нужные вам даты"
-    #                 self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #                 return
-    #         elif user_chat_position == ProfileStatesGroup.confirm_rent_date.name:
-    #             self.bot_message = "Хорошо, уже проверяю"
-    #             self.send_bot_message(message_from_webhook=message, read_chat=True)
-    #             return
+    @message_handler(command='Создать бронирование', state=ProfileStatesGroup.chat_begin.name)
+    def create_new_booking(self, command, state, user_id):
+        self.bot_message = "Создание нового бронирования: \nКакой период вас интересует?"
+        self.set_user_chat_position(user_id=user_id,
+                                                chat_position=ProfileStatesGroup.get_rent_date.name)
+        return
+    @message_handler(command="None", state=ProfileStatesGroup.get_rent_date.name)
+    def get_rent_date(self, command, state, user_id):
+        date = self.define_user_rent_date(message_from_user=self.message_from_user)
+        if date != '0':
+            self.bot_message = "Вас интересует период:{period}?".format(period=date)
+            self.set_user_chat_position(user_id=user_id,
+                                        chat_position=ProfileStatesGroup.confirm_rent_date.name)
+        else:
+            self.bot_message = "Не могу понять нужный вам период попробуйте ввести по другому."
+        return
+
+    @message_handler(command="None", state=ProfileStatesGroup.confirm_rent_date.name)
+    def confirm_rent_date(self, command, state, user_id):
+        confirm = self.define_user_confirm(message_from_user=self.message_from_user)
+        if confirm != '0':
+            if confirm.find('Да') != -1:
+                self.bot_message = "Сейчас проверю есть ли свободные номера на данную дату..."
+                pass
+                self.set_user_chat_position(user_id=user_id,
+                                        chat_position=ProfileStatesGroup.confirm_rent_date.name)
+            if confirm.find('Нет') != -1:
+                self.bot_message = "Введите нужную вам дату. Если я распознаю ее не правильно введите ее по другому."
+                self.set_user_chat_position(user_id=user_id,
+                                            chat_position=ProfileStatesGroup.get_rent_date.name)
+        else:
+            self.bot_message = "Не могу понять ваш ответ. Сформулируйте, точнее"
+        return
+
+    def start_pooling(self, message_from_user, state, user_id):
+        self.start_assistent(command=message_from_user, state=state, user_id=user_id)
+        self.off_assisstent(command=message_from_user, state=state, user_id=user_id)
+        self.reset_asisstent(command=message_from_user, state=state, user_id=user_id)
+        self.create_new_booking(command=message_from_user, state=state, user_id=user_id)
+        self.get_rent_date(command='None', message_from_user=message_from_user, state=state, user_id=user_id)
+        self.confirm_rent_date(command='None', message_from_user=message_from_user, state=state, user_id=user_id)
+
+    def get_user_chat_position(self, user_id: str):
+        if user_id is not None:
+            try:
+                with self.database_connection.cursor() as cursor:
+                    select_user_chat_position = "SELECT chat_position FROM user_chat_position WHERE user_id = {user_id}".format(
+                        user_id=user_id)
+                    cursor.execute(select_user_chat_position)
+                    rows = cursor.fetchall()
+
+                    return rows[0]['chat_position'] if rows is not None else None
+            except Exception as ex:
+                logger.error(ex)
+
+    def set_user_chat_position(self, user_id: str, chat_position: str):
+        if user_id is not None and chat_position is not None:
+            try:
+                with self.database_connection.cursor() as cursor:
+                    set_user_chat_position = "INSERT INTO user_chat_position (user_id, chat_position) VALUES ({user_id}, '{chat_position}') ON DUPLICATE KEY UPDATE chat_position = '{chat_position}'".format(
+                        user_id=user_id, chat_position=chat_position)
+                    cursor.execute(set_user_chat_position)
+                    self.database_connection.commit()
+            except Exception as ex:
+                logger.error(ex)
 
     async def connect_database(self):
         try:
@@ -191,6 +175,70 @@ class HotelBot:
         except Exception as ex:
             logger.error("Connection refused...")
             logger.error(ex)
+
+    async def send_bot_message(self, message_from_webhook, read_chat: bool):
+        # Чтение чата
+        if read_chat:
+            chat_read = message_from_webhook.read_message_chat()
+            await self.avito.read_chat(chat_read)
+        #
+        # Отправка сообщения.
+        await self.avito.send_message(message_from_webhook.answer(self.bot_message))
+
+    def define_user_action(self, message_from_user: str):
+        with open('messages.json', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+        promt = messages['yandex_gpt']['define_user_action_promt']
+        message = [
+            {
+                "role": "system",
+                "text": promt
+            },
+            {
+                "role": "user",
+                "text": message_from_user
+            }
+        ]
+        result = self.yandexgpt.make_request(message)
+        return result
+
+    def define_user_confirm(self, message_from_user: str):
+        with open('messages.json', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+        promt = messages['yandex_gpt']['confirm_user_input']
+        message = [
+            {
+                "role": "system",
+                "text": promt
+            },
+            {
+                "role": "user",
+                "text": "Сообщение от пользователя:" + message_from_user
+            }
+        ]
+        result = self.yandexgpt.make_request(message)
+        return result
+
+    def define_user_rent_date(self, message_from_user: str):
+        with open('messages.json', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+        promt = messages['yandex_gpt']['define_rent_date_promt']
+        message = [
+            {
+                "role": "system",
+                "text": promt
+            },
+            {
+                "role": "user",
+                "text": "Сообщение пользователя - " + message_from_user
+            }
+        ]
+        result = self.yandexgpt.make_request(message)
+        return result
+
+    def prepare_message(self, message: str):
+        prepared_message = message.strip()
+        return prepared_message
 
 
 
@@ -239,74 +287,10 @@ class HotelBot:
     #                 self.bot_message = "Не могу понять, что вы хотите, попробуйте иначе сформулировать запрос."
 
 
-async def send_bot_message(self, message_from_webhook, read_chat: bool, bot_message: str):
-        # Чтение чата
-        if read_chat:
-            chat_read = message_from_webhook.read_message_chat()
-            await self.avito.read_chat(chat_read)
-        #
-        # Отправка сообщения.
-        await self.avito.send_message(message_from_webhook.answer(bot_message))
 
 
-async def get_user_chat_position(database_connection, user_id: str):
-    if user_id is not None:
-        try:
-            with database_connection.cursor() as cursor:
-                select_user_chat_position = "SELECT chat_position FROM user_chat_position WHERE user_id = {user_id}".format(
-                    user_id=user_id)
-                cursor.execute(select_user_chat_position)
-                rows = cursor.fetchall()
 
-                return rows[0]['chat_position'] if rows is not None else None
-        except Exception as ex:
-            logger.error(ex)
 
-async def set_user_chat_position(database_connection, user_id: str, chat_position: str):
-     if user_id is not None and chat_position is not None:
-         try:
-             with database_connection.cursor() as cursor:
-                 set_user_chat_position = "INSERT INTO user_chat_position (user_id, chat_position) VALUES ({user_id}, '{chat_position}') ON DUPLICATE KEY UPDATE chat_position = '{chat_position}'".format(
-                     user_id=user_id, chat_position=chat_position)
-                 cursor.execute(set_user_chat_position)
-                 database_connection.commit()
-         except Exception as ex:
-             logger.error(ex)
 
-async def define_user_action(yandexgpt, message_from_user: str):
-    with open('messages.json', 'r', encoding='utf-8') as file:
-        messages = json.load(file)
-    promt = messages['yandex_gpt']['define_user_action_promt']
-    message = [
-        {
-            "role": "system",
-            "text": promt
-        },
-        {
-            "role": "user",
-            "text": message_from_user
-        }
-    ]
-    user_action = yandexgpt.make_request(message)
-    return user_action
 
-async def define_user_rent_date(yandexgpt, message_from_user: str):
-     with open('messages.json', 'r', encoding='utf-8') as file:
-         messages = json.load(file)
-     promt = messages['yandex_gpt']['define_rent_date_promt']
-     message = [
-         {
-             "role": "system",
-             "text": promt
-         },
-         {
-             "role": "user",
-             "text": message_from_user
-         }
-     ]
-     user_action = yandexgpt.make_request(message)
-     return user_action
 
-async def prepare_message(self, message: str):
-    prepared_message = message.strip()
-    return prepared_message
