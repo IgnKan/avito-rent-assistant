@@ -3,3 +3,6 @@
 *.db
 *.exe
 service_account.json
+/rag/chroma
+chroma.sqlite3
+/chroma

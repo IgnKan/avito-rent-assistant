@@ -4,6 +4,7 @@ import requests
 import configparser
 import logging
 from loguru import logger
+from langchain.embeddings import OpenAIEmbeddings
 
 
 logging.basicConfig(
@@ -94,3 +95,5 @@ class YandexGPT:
                 logger.error(error)
             else:
                 self.api_key = response.json()["iamToken"]
+
+

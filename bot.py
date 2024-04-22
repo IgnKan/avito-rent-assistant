@@ -12,6 +12,15 @@ from yandexgpt import YandexGPT
 from config import host, user, password, db_name
 from loguru import logger
 
+from langchain_community.vectorstores import Chroma
+from langchain.evaluation import load_evaluator
+from langchain_community.embeddings import SentenceTransformerEmbeddings
+
+
+embedding_function = SentenceTransformerEmbeddings(model_name="paraphrase-multilingual-mpnet-base-v2")
+
+CHROMA_PATH = "rag/chroma"
+
 class ProfileStatesGroup(enum.Enum):
     chat_begin = 1
 
@@ -72,7 +81,7 @@ class HotelBot:
             return
         else:
             user_action = self.define_user_action(message_from_user=message_text)
-            self.start_pooling(message_from_user=user_action, state=state, user_id=message.author_id)
+            self.start_pooling(command_from_user=user_action, state=state, user_id=message.author_id)
             if state != ProfileStatesGroup.user_off_assistent.name or self.user_want_to_activate_assistent == True:
                 await self.send_bot_message(message_from_webhook=message, read_chat=True)
                 self.user_want_to_activate_assistent = False
@@ -121,12 +130,12 @@ class HotelBot:
     def confirm_rent_date(self, command, state, user_id):
         confirm = self.define_user_confirm(message_from_user=self.message_from_user)
         if confirm != '0':
-            if confirm.find('Да') != -1:
+            if confirm.find('да') != -1:
                 self.bot_message = "Сейчас проверю есть ли свободные номера на данную дату..."
                 pass
                 self.set_user_chat_position(user_id=user_id,
                                         chat_position=ProfileStatesGroup.confirm_rent_date.name)
-            if confirm.find('Нет') != -1:
+            if confirm.find('нет') != -1:
                 self.bot_message = "Введите нужную вам дату. Если я распознаю ее не правильно введите ее по другому."
                 self.set_user_chat_position(user_id=user_id,
                                             chat_position=ProfileStatesGroup.get_rent_date.name)
@@ -144,19 +153,20 @@ class HotelBot:
 
     @message_handler(command="вопрос по условиям проживания")
     def answer_the_question_live_condition(self, command, state, user_id):
+        answer = self.answer_user_question(message_from_user=self.message_from_user)
+        self.bot_message = answer
 
-        self.bot_message = "Отвечаю на ваш вопрос по условиям проживания бла-бла-бла"
         return
 
-    def start_pooling(self, message_from_user, state, user_id):
-        self.start_assistent(command=message_from_user, state=state, user_id=user_id)
-        self.off_assisstent(command=message_from_user, state=state, user_id=user_id)
-        self.reset_asisstent(command=message_from_user, state=state, user_id=user_id)
-        self.answer_the_question_rent_condition(command=message_from_user, state=state, user_id=user_id)
-        self.answer_the_question_live_condition(command=message_from_user, state=state, user_id=user_id)
-        self.create_new_booking(command=message_from_user, state=state, user_id=user_id)
-        self.get_rent_date(command=message_from_user, message_from_user=message_from_user, state=state, user_id=user_id)
-        self.confirm_rent_date(command=message_from_user, message_from_user=message_from_user, state=state, user_id=user_id)
+    def start_pooling(self, command_from_user, state, user_id):
+        self.start_assistent(command=command_from_user, state=state, user_id=user_id)
+        self.off_assisstent(command=command_from_user, state=state, user_id=user_id)
+        self.reset_asisstent(command=command_from_user, state=state, user_id=user_id)
+        self.answer_the_question_rent_condition(command=command_from_user, state=state, user_id=user_id)
+        self.answer_the_question_live_condition(command=command_from_user, state=state, user_id=user_id)
+        self.create_new_booking(command=command_from_user, state=state, user_id=user_id)
+        self.get_rent_date(command=command_from_user, state=state, user_id=user_id)
+        self.confirm_rent_date(command=command_from_user, state=state, user_id=user_id)
 
     def get_user_chat_position(self, user_id):
         if user_id is not None:
@@ -262,6 +272,36 @@ class HotelBot:
         ]
         result = self.yandexgpt.make_request(message)
         return result.lower()
+
+
+    def answer_user_question(self, message_from_user: str):
+        # Create CLI.
+
+        # Prepare the DB.
+        db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+
+        # Search the DB.
+        results = db.similarity_search_with_relevance_scores(message_from_user, k=5)
+        if len(results) == 0 or results[0][1] < 0.7:
+            print("Unable to find matching results.")
+
+        context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
+
+        with open('messages.json', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+        promt = messages['yandex_gpt']['answer_user_question_promt']
+        message = [
+            {
+                "role": "system",
+                "text": promt.format(context=context_text)
+            },
+            {
+                "role": "user",
+                "text": "Вопрос пользователя: " + message_from_user
+            }
+        ]
+        result = self.yandexgpt.make_request(message)
+        return result
 
     def prepare_message(self, message: str):
         prepared_message = message.strip()
