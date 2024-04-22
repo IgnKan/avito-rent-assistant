@@ -13,7 +13,9 @@ from avito.schema.messenger.models import WebhookMessage, MessageToSend, Message
 from bot import HotelBot
 from config import NGROK_TUNNEL_URL
 import os
+import gspread
 from avito import Avito
+from googlesheets import BookingDataBase
 from yandexgpt import YandexGPT
 
 CLIENT_ID = os.getenv("CLIENT_ID")
@@ -26,9 +28,12 @@ ME_ID = 168565395
 app = FastAPI()
 WEBHOOK_PATH = f"/bot/{TOKEN}/webhook"
 WEBHOOK_URL = f"{NGROK_TUNNEL_URL}{WEBHOOK_PATH}"
+gspread_account_file = "service_account.json"
+
 avito = Avito(TOKEN, CLIENT_ID, CLIENT_SECRET)
 gpt = YandexGPT(folder_id="b1gmokkhlfagg82cirvf")
-bot = HotelBot(avito=avito, yandexgpt=gpt)
+booking_data_base = BookingDataBase(file_account=gspread_account_file, sheet_name="Бронирование гостиницы Воронеж")
+bot = HotelBot(avito=avito, yandexgpt=gpt, booking_data_base=booking_data_base)
 
 handled_webhooks = {}
 

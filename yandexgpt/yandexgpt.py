@@ -15,7 +15,7 @@ logger = logging.getLogger(name="YaGPT-API")
 
 
 class YandexGPT:
-    def __init__(self, folder_id: str, request_url: str = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion", model: str = "yandexgpt-pro") -> None:
+    def __init__(self, folder_id: str, request_url: str = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion", model: str = "yandexgpt") -> None:
         self.api_key = None
         self.folder_id = folder_id
         self.request_url = request_url
@@ -24,10 +24,10 @@ class YandexGPT:
     def generate_promt(self,
                         message: list,
                         stream: bool = False,
-                        temperature: float = 0.1,
+                        temperature: float = 0.2,
                         max_tokens: int = 4000) -> dict:
         prompt = {
-            "modelUri": f"gpt://{self.folder_id}/{self.model}",
+            "modelUri": f"gpt://{self.folder_id}/{self.model}/latest",
             "completionOptions": {
                 "stream": stream,
                 "temperature": temperature,
@@ -40,7 +40,7 @@ class YandexGPT:
     def make_request(self,
                      user_message: list,
                      stream: bool = False,
-                     temperature: float = 0.1,
+                     temperature: float = 0.2,
                      max_tokens: int = 4000
                      ) -> str:
         headers = {
