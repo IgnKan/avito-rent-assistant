@@ -1,4 +1,4 @@
-NGROK_TUNNEL_URL = 'https://48e7-95-32-128-45.ngrok-free.app'
+NGROK_TUNNEL_URL = 'https://16fc-95-32-128-45.ngrok-free.app'
 
 # Mysql config
 host = "localhost"

@@ -15,9 +15,10 @@ from loguru import logger
 from langchain_community.vectorstores import Chroma
 from langchain.evaluation import load_evaluator
 from langchain_community.embeddings import SentenceTransformerEmbeddings
+from rag.RAGGenerator import YandexGptEmbeddingFunction
 
 
-embedding_function = SentenceTransformerEmbeddings(model_name="paraphrase-multilingual-mpnet-base-v2")
+embedding_function = YandexGptEmbeddingFunction(iam_token="t1.9euelZrKlJCenMnNz5aYy5SUzpPMz-3rnpWaipPGk5Cbm86UlpHJys_Mj5rl8_dKBGFO-e8EJQZy_t3z9wozXk757wQlBnL-zef1656VmpGTjpqdjsrOi5ySyZiRzJme7_zF656VmpGTjpqdjsrOi5ySyZiRzJme.5saOlFwfsZUUL4EBe7oBJMic3V0NN11bVw2lW5aTSw0z-TL5VjmNVh6fL8zxsAD-Z6QQ3UTY--6uaBSDLgurDw", folder_id="b1gmokkhlfagg82cirvf")
 
 CHROMA_PATH = "rag/chroma"
 
@@ -281,7 +282,7 @@ class HotelBot:
         db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
         # Search the DB.
-        results = db.similarity_search_with_relevance_scores(message_from_user, k=5)
+        results = db.similarity_search_with_relevance_scores(message_from_user, k=8)
         if len(results) == 0 or results[0][1] < 0.7:
             print("Unable to find matching results.")
 
