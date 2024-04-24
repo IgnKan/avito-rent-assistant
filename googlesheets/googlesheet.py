@@ -10,28 +10,27 @@ class BookingDataBase:
 
         self.had_change = False
 
-    def add_booking(self, user_id, booking_begin_date, booking_end_date, people_number, user_avito_name, user_contact):
+    def add_booking(self, user_id, booking_start_date, booking_last_date, people_number, user_avito_name, user_contact):
         free_row = self.find_free_row()
-        if not self.find_booking(user_id=user_id, booking_begin_date=booking_begin_date, booking_end_date=booking_end_date):
-             self.wks.update([[user_avito_name, booking_begin_date, booking_end_date, people_number, user_contact, user_id]], "A" + str(free_row))
+        if not self.find_user_booking(user_id=user_id):
+             self.wks.update([[user_avito_name, booking_start_date, booking_last_date, people_number, user_contact, user_id]], "A" + str(free_row))
         else:
             return -1
 
-    def delete_booking(self, user_id, booking_begin_date, booking_end_date):
+    def delete_booking(self, user_id, booking_start_date, booking_last_date):
 
         self.update_remote_database()
         pass
 
-    def find_free_booking(self, booking_date, people_number):
+    def find_free_booking(self, booking_start_date, booking_last_date, people_number):
         pass
 
     def manage_booking(self, user_id, booking_date, new_booking_date, new_people_number, new_user_contact):
-        self.update_remote_database()
         pass
 
-    def find_booking(self, user_id, booking_begin_date, booking_end_date):
+    def find_user_booking(self, user_id):
         for sublist in self.booking_records:
-            if user_id in sublist and booking_begin_date in sublist and booking_end_date in sublist:
+            if user_id in sublist:
                 return sublist
         return None
 
@@ -48,3 +47,9 @@ class BookingDataBase:
         empty_indices = [i for i, sublist in enumerate(self.booking_records) if all(x == '' for x in sublist)]
 
         return empty_indices[0] + 1
+
+
+if __name__ == "__main__":
+    booking_base = BookingDataBase("../service_account.json", sheet_name="Бронирование гостиницы Воронеж")
+    user_booking = booking_base.find_user_booking(user_id = '360445272')
+    print(user_booking)

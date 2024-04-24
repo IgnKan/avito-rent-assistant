@@ -7,14 +7,6 @@ from loguru import logger
 from langchain.embeddings import OpenAIEmbeddings
 
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(name)s - %(levelname)s @ %(message)s",
-    datefmt="%d-%m-%Y %H:%M:%S",
-)
-logger = logging.getLogger(name="YaGPT-API")
-
-
 class YandexGPT:
     def __init__(self, folder_id: str, request_url: str = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion", model: str = "yandexgpt") -> None:
         self.api_key = None
@@ -25,7 +17,7 @@ class YandexGPT:
     def generate_promt(self,
                         message: list,
                         stream: bool = False,
-                        temperature: float = 0.2,
+                        temperature: float = 0.1,
                         max_tokens: int = 4000) -> dict:
         prompt = {
             "modelUri": f"gpt://{self.folder_id}/{self.model}/latest",
@@ -41,7 +33,7 @@ class YandexGPT:
     def make_request(self,
                      user_message: list,
                      stream: bool = False,
-                     temperature: float = 0.2,
+                     temperature: float = 0.1,
                      max_tokens: int = 4000
                      ) -> str:
         headers = {
@@ -51,7 +43,7 @@ class YandexGPT:
 
         try:
             logger.debug(
-                f"Request [yandexgpt]: {self.request_url} | {self.model}")
+                f"Request [yandexgpt]: {self.request_url} | {self.model} | text = {user_message}")
             response = requests.post(self.request_url,
                                      headers=headers,
                                      json=self.generate_promt(user_message,
@@ -73,6 +65,7 @@ class YandexGPT:
             except KeyError as error:
                 logger.error(error)
             else:
+                logger.debug("Result - " + result)
                 return result
         return ""
 
@@ -95,5 +88,6 @@ class YandexGPT:
                 logger.error(error)
             else:
                 self.api_key = response.json()["iamToken"]
+                return self.api_key
 
 

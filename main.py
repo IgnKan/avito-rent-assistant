@@ -16,6 +16,7 @@ import os
 import gspread
 from avito import Avito
 from googlesheets import BookingDataBase
+from rag.RAGGenerator import YandexGptEmbeddingFunction
 from yandexgpt import YandexGPT
 
 CLIENT_ID = os.getenv("CLIENT_ID")
@@ -64,7 +65,14 @@ async def on_startup():
         token = await avito.init_token_if_needed()
         os.environ["TOKEN"] = token.access_token
     # Получаем токен для YandexGpt
-    gpt.init_access_token(oauth_token=OAuthYandex, request_url="https://iam.api.cloud.yandex.net/iam/v1/tokens")
+    if IAMYandex == None:
+        iamtoken = gpt.init_access_token(oauth_token=OAuthYandex, request_url="https://iam.api.cloud.yandex.net/iam/v1/tokens")
+        os.environ["IAMYandex"] = iamtoken
+    embedding_function = YandexGptEmbeddingFunction(
+        iam_token=iamtoken,
+        folder_id="b1gmokkhlfagg82cirvf")
+
+    bot.embedding_function = embedding_function
     # ---
     # Проверяем наши вебхуки
 
@@ -87,6 +95,7 @@ async def bot_webhook(body = Body()):
     if received_message.author_id != ME_ID and received_message.content.text != None and received_message.read ==  None :
         # webhook_hash = generate_webhook_hash(author_id=received_message.author_id, timestamp=received_message.created, text=received_message.content.text)
         if need_to_handle_webhook(received_message.id):
+            print(f"Processing message from - " + str(received_message.author_id))
             #Формируем ответное сообщение
             await bot.process_message(message=received_message)
 

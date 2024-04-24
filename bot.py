@@ -11,14 +11,13 @@ from googlesheets import BookingDataBase
 from yandexgpt import YandexGPT
 from config import host, user, password, db_name
 from loguru import logger
+from datetime import datetime
 
 from langchain_community.vectorstores import Chroma
 from langchain.evaluation import load_evaluator
 from langchain_community.embeddings import SentenceTransformerEmbeddings
 from rag.RAGGenerator import YandexGptEmbeddingFunction
 
-
-embedding_function = YandexGptEmbeddingFunction(iam_token="t1.9euelZrKlJCenMnNz5aYy5SUzpPMz-3rnpWaipPGk5Cbm86UlpHJys_Mj5rl8_dKBGFO-e8EJQZy_t3z9wozXk757wQlBnL-zef1656VmpGTjpqdjsrOi5ySyZiRzJme7_zF656VmpGTjpqdjsrOi5ySyZiRzJme.5saOlFwfsZUUL4EBe7oBJMic3V0NN11bVw2lW5aTSw0z-TL5VjmNVh6fL8zxsAD-Z6QQ3UTY--6uaBSDLgurDw", folder_id="b1gmokkhlfagg82cirvf")
 
 CHROMA_PATH = "rag/chroma"
 
@@ -30,9 +29,9 @@ class ProfileStatesGroup(enum.Enum):
     get_rent_people_number = 8
     get_user_contact = 9
     confirm_rent = 10
-    waiting_3_days_before_invite = 11
+    waiting_3_days = 11
 
-    user_off_assistent = 20
+    user_off_assistant = 20
 
 
 
@@ -44,7 +43,10 @@ class HotelBot:
         self.bot_message: str | None = "Не могу понять, что вы хотите. Попробуйте сформулировать иначе"
         self.database_connection = None
         self.message_from_user: str | None = None
-        self.user_want_to_activate_assistent = False
+        self.user_want_to_activate_assistant = False
+        self.was_handled = False
+
+        self.embedding_function = None
 
     def __del__(self):
         self.database_connection.close()
@@ -53,16 +55,19 @@ class HotelBot:
     def message_handler(command, state=None):
         def inner_decorator(func):
             def wrapped(*args, **kwargs):
-                user_command = kwargs['command']
-                user_state = kwargs['state']
-                user_id = kwargs['user_id']
-                if state:
-                    if state != user_state:
-                        return
+                if args[0].was_handled:
+                    return wrapped
+                else:
+                    user_command = kwargs['command']
+                    user_state = kwargs['state']
+                    user_id = kwargs['user_id']
+                    if state:
+                        if state != user_state:
+                            return
+                        elif user_command.find(command) != -1:
+                            func(*args, command=user_command, state=user_state, user_id=user_id)
                     elif user_command.find(command) != -1:
                         func(*args, command=user_command, state=user_state, user_id=user_id)
-                elif user_command.find(command) != -1:
-                    func(*args, command=user_command, state=user_state, user_id=user_id)
 
             return wrapped
 
@@ -73,34 +78,49 @@ class HotelBot:
         self.message_from_user = message_text
         state = self.get_user_chat_position(user_id=message.author_id)
 
+        logger.debug("User_state - " + state)
+
         if state == None:
             with open('messages.json', 'r', encoding='utf-8') as file:
                 messages = json.load(file)
-            bot_message = messages['greetings']['welcome_message_for_new_user'].replace('\\n', '\n')
+            self.bot_message = messages['greetings']['welcome_message_for_new_user'].replace('\\n', '\n')
             self.set_user_chat_position(user_id=message.author_id, chat_position=ProfileStatesGroup.chat_begin.name)
             await self.send_bot_message(message_from_webhook=message, read_chat=True)
             return
         else:
             user_action = self.define_user_action(message_from_user=message_text)
             self.start_pooling(command_from_user=user_action, state=state, user_id=message.author_id)
-            if state != ProfileStatesGroup.user_off_assistent.name or self.user_want_to_activate_assistent == True:
+            if state != ProfileStatesGroup.user_off_assistant.name or self.user_want_to_activate_assistant == True:
                 await self.send_bot_message(message_from_webhook=message, read_chat=True)
-                self.user_want_to_activate_assistent = False
+                self.user_want_to_activate_assistant = False
                 self.bot_message = "Не могу понять, что вы хотите. Попробуйте сформулировать иначе"
+                self.was_handled = False
 
-    @message_handler(state=ProfileStatesGroup.user_off_assistent.name, command='включить ассистента')
-    def start_assistent(self, command, state, user_id):
+    @message_handler(state=ProfileStatesGroup.user_off_assistant.name, command='включить ассистента')
+    def start_assistant(self, command, state, user_id):
         self.bot_message = "Ассистент активирован!"
         self.set_user_chat_position(user_id=user_id,
                                     chat_position=ProfileStatesGroup.chat_begin.name)
-        self.user_want_to_activate_assistent = True
+        self.user_want_to_activate_assistant = True
+        self.was_handled = True
         return
 
     @message_handler(command='отключить ассистента')
-    def off_assisstent(self, command, state, user_id):
+    def off_assistant(self, command, state, user_id):
         self.bot_message = "Асситент отключен! Чат только с владельцем."
         self.set_user_chat_position(user_id=user_id,
-                                    chat_position=ProfileStatesGroup.user_off_assistent.name)
+                                    chat_position=ProfileStatesGroup.user_off_assistant.name)
+        self.was_handled = True
+        return
+
+    @message_handler(command='инструкция к ассистенту')
+    def get_assistant_instruction(self, command, state, user_id):
+
+        with open('messages.json', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+        self.bot_message = messages['greetings']['welcome_message_for_new_user'].replace('\\n', '\n')
+        self.was_handled = True
+
         return
 
     @message_handler(command='сбросить состояние ассистента')
@@ -108,23 +128,51 @@ class HotelBot:
         self.bot_message = "Ассистент сброшен!"
         self.set_user_chat_position(user_id=user_id,
                                     chat_position=ProfileStatesGroup.chat_begin.name)
+        self.was_handled = True
         return
 
     @message_handler(command='создать бронирование', state=ProfileStatesGroup.chat_begin.name)
     def create_new_booking(self, command, state, user_id):
-        self.bot_message = "Создание нового бронирования: \nКакой период вас интересует?"
-        self.set_user_chat_position(user_id=user_id,
-                                                chat_position=ProfileStatesGroup.get_rent_date.name)
+        user_booking = self.booking_data_base.find_user_booking(user_id=str(user_id))
+
+        if user_booking == -1:
+            self.bot_message = "Какой период вас интересует?"
+            self.set_user_chat_position(user_id=user_id,
+                                                    chat_position=ProfileStatesGroup.get_rent_date.name)
+        else:
+            self.bot_message = "Вы уже оформили бронирование. Сейчас каждый пользователь может иметь только одно бронирование. Ваше бронирование - " + str(user_booking)
+        self.was_handled = True
         return
+
+    @message_handler(command='изменить бронирование', state=ProfileStatesGroup.chat_begin.name)
+    def manage_booking(self, command, state, user_id):
+        user_booking = self.booking_data_base.find_user_booking(user_id=str(user_id))
+        if user_booking == -1:
+            self.bot_message = "У вас нет бронирования, которое можно изменить. Может быть вы хотите сначала создать бронирование?"
+        else:
+            self.bot_message = "Ваше бронирование - "+ str(user_booking) + "\nЧто вы хотите изменить?"
+
+    @message_handler(command='удалить бронирование', state=ProfileStatesGroup.chat_begin.name)
+    def delete_booking(self, command, state, user_id):
+        user_booking = self.booking_data_base.find_user_booking(user_id=str(user_id))
+        if user_booking == -1:
+            self.bot_message = "У вас нет бронирования, которое можно удалить. Может быть вы хотите сначала создать бронирование?"
+        else:
+            self.bot_message = "Ваше бронирование - " + str(user_booking) + "\nВы уверены, что хотите его отменить?"
+
     @message_handler(command="none", state=ProfileStatesGroup.get_rent_date.name)
     def get_rent_date(self, command, state, user_id):
         date = self.define_user_rent_date(message_from_user=self.message_from_user)
-        if date != '0':
-            self.bot_message = "Вас интересует период:{period}?".format(period=date)
+        try:
+            parsed_date = self.parse_date_range(date_range=date)
+            self.bot_message = "Вас интересует период: C {start_date} По {last_date}?".format(start_date = parsed_date["start_date"], last_date = parsed_date["last_date"])
             self.set_user_chat_position(user_id=user_id,
-                                        chat_position=ProfileStatesGroup.confirm_rent_date.name)
-        else:
-            self.bot_message = "Не могу понять нужный вам период попробуйте ввести по другому."
+                                    chat_position=ProfileStatesGroup.confirm_rent_date.name)
+
+        except Exception as ex:
+            self.bot_message = date
+
+        self.was_handled = True
         return
 
     @message_handler(command="none", state=ProfileStatesGroup.confirm_rent_date.name)
@@ -132,42 +180,70 @@ class HotelBot:
         confirm = self.define_user_confirm(message_from_user=self.message_from_user)
         if confirm != '0':
             if confirm.find('да') != -1:
-                self.bot_message = "Сейчас проверю есть ли свободные номера на данную дату..."
-                pass
-                self.set_user_chat_position(user_id=user_id,
-                                        chat_position=ProfileStatesGroup.confirm_rent_date.name)
+                    self.bot_message = "Сколько будет людей?"
+                    self.set_user_chat_position(user_id=user_id, chat_position=ProfileStatesGroup.get_rent_people_number.name)
             if confirm.find('нет') != -1:
                 self.bot_message = "Введите нужную вам дату. Если я распознаю ее не правильно введите ее по другому."
                 self.set_user_chat_position(user_id=user_id,
                                             chat_position=ProfileStatesGroup.get_rent_date.name)
         else:
             self.bot_message = "Не могу понять ваш ответ. Сформулируйте, точнее"
+
+        self.was_handled = True
         return
 
-    @message_handler(command="вопрос по условиям аренды")
-    def answer_the_question_rent_condition(self, command, state, user_id):
-        with open('messages.json', 'r', encoding='utf-8') as file:
-            messages = json.load(file)
+    @message_handler(command="none", state=ProfileStatesGroup.get_rent_people_number.name)
+    def get_rent_people_number(self, command, state, user_id):
+        people_number = self.get_people_number(message_from_user=command)
 
-        self.bot_message = messages['rent']['rent_condition']
-        return
+        try:
+            people_number = float(people_number)
+            self.bot_message = str(people_number)
 
-    @message_handler(command="вопрос по условиям проживания")
-    def answer_the_question_live_condition(self, command, state, user_id):
+        except Exception as ex:
+            self.bot_message = people_number
+
+
+
+    @message_handler(command="вопрос по бронированию")
+    def answer_the_rent_question(self, command, state, user_id):
         answer = self.answer_user_question(message_from_user=self.message_from_user)
         self.bot_message = answer
-
+        self.was_handled = True
         return
 
     def start_pooling(self, command_from_user, state, user_id):
-        self.start_assistent(command=command_from_user, state=state, user_id=user_id)
-        self.off_assisstent(command=command_from_user, state=state, user_id=user_id)
+        self.start_assistant(command=command_from_user, state=state, user_id=user_id)
+        self.off_assistant(command=command_from_user, state=state, user_id=user_id)
         self.reset_asisstent(command=command_from_user, state=state, user_id=user_id)
-        self.answer_the_question_rent_condition(command=command_from_user, state=state, user_id=user_id)
-        self.answer_the_question_live_condition(command=command_from_user, state=state, user_id=user_id)
-        self.create_new_booking(command=command_from_user, state=state, user_id=user_id)
-        self.get_rent_date(command=command_from_user, state=state, user_id=user_id)
-        self.confirm_rent_date(command=command_from_user, state=state, user_id=user_id)
+
+        # Необходимо еще раз проверить состояние бота. Так как клиент мог его сбросить
+        user_state = self.get_user_chat_position(user_id=user_id)
+
+        self.delete_booking(command=command_from_user, state=user_state, user_id=user_id)
+        self.manage_booking(command=command_from_user, state=user_state, user_id=user_id)
+
+        self.answer_the_rent_question(command=command_from_user, state=user_state, user_id=user_id)
+        self.create_new_booking(command=command_from_user, state=user_state, user_id=user_id)
+        self.get_rent_date(command='none', state=user_state, user_id=user_id)
+        self.confirm_rent_date(command='none', state=user_state, user_id=user_id)
+        self.get_assistant_instruction(command=command_from_user, state=user_state, user_id=user_id)
+
+    def parse_date_range(self, date_range: str):
+        # Извлекаем даты начала и конца из строки
+        start_date, end_date = date_range.split(" по ")
+
+        # Преобразуем даты в объекты datetime
+        start_date = start_date.removeprefix("с ")
+        start_date = start_date.removeprefix("C ")
+        start_date = start_date.removesuffix(" ")
+        end_date = end_date.removesuffix(".")
+
+        current_date = datetime.strptime(start_date, '%d-%m-%y').date()
+        last_date = datetime.strptime(end_date, '%d-%m-%y').date()
+
+        # Возвращаем список-ключ значение
+        return {"start_date": current_date, "last_date": last_date}
 
     def get_user_chat_position(self, user_id):
         if user_id is not None:
@@ -264,7 +340,7 @@ class HotelBot:
         message = [
             {
                 "role": "system",
-                "text": promt
+                "text": promt.format(current_year=datetime.now().year, current_date=datetime.now().date())
             },
             {
                 "role": "user",
@@ -279,7 +355,7 @@ class HotelBot:
         # Create CLI.
 
         # Prepare the DB.
-        db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+        db = Chroma(persist_directory=CHROMA_PATH, embedding_function=self.embedding_function)
 
         # Search the DB.
         results = db.similarity_search_with_relevance_scores(message_from_user, k=8)
@@ -299,6 +375,24 @@ class HotelBot:
             {
                 "role": "user",
                 "text": "Вопрос пользователя: " + message_from_user
+            }
+        ]
+        result = self.yandexgpt.make_request(message)
+        return result
+
+    def get_people_number(self, message_from_user: str):
+
+        with open('messages.json', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+        promt = messages['yandex_gpt']['get_user_people_number']
+        message = [
+            {
+                "role": "system",
+                "text": promt
+            },
+            {
+                "role": "user",
+                "text": "Число пользователя: " + message_from_user
             }
         ]
         result = self.yandexgpt.make_request(message)

@@ -6,6 +6,7 @@ from langchain.vectorstores.chroma import Chroma
 from chromadb import Documents, EmbeddingFunction, Embeddings
 import time
 import requests
+from loguru import logger
 
 import os
 import shutil
@@ -22,8 +23,7 @@ class YandexGptEmbeddingFunction(EmbeddingFunction):
         self.iam_token = iam_token
         self.sleep_interval = sleep_interval
         self.folder_id = folder_id
-        if self.iam_token:
-            self.headers = {'Authorization': 'Bearer ' + self.iam_token, "x-folder-id": self.folder_id}
+        self.headers = {'Authorization': 'Bearer ' + self.iam_token, "x-folder-id": self.folder_id}
 
     def embed_document(self, text):
         j = {
@@ -49,23 +49,48 @@ class YandexGptEmbeddingFunction(EmbeddingFunction):
             "embedding_type": "EMBEDDING_TYPE_QUERY",
             "text": text
         }
-        res = requests.post("https://llm.api.cloud.yandex.net/llm/v1alpha/embedding",
-                            json=j, headers=self.headers)
-        vec = res.json()['embedding']
-        time.sleep(self.sleep_interval)
-        return vec
+        logger.debug("Request [yandexEmbedding]: " + text)
+        try:
+            res = requests.post("https://llm.api.cloud.yandex.net/llm/v1alpha/embedding",
+                                json=j, headers=self.headers)
+            vec = res.json()['embedding']
+            time.sleep(self.sleep_interval)
+            return vec
+        except Exception as ex:
+            logger.error("Response [yandexEmbeddings]: " + ex.__str__())
+
+    # def init_access_token(self, oauth_token: str, request_url: str) -> None:
+    #     if oauth_token:
+    #
+    #         headers = {
+    #             "Content-Type": "application/json"
+    #         }
+    #
+    #         promt = {
+    #             "yandexPassportOauthToken": oauth_token
+    #         }
+    #         try:
+    #             response = requests.post(request_url,
+    #                                      headers=headers,
+    #                                      json=promt)
+    #
+    #         except requests.RequestException as error:
+    #             logger.error(error)
+    #         else:
+    #             self.iam_token = response.json()["iamToken"]
+
 
 from chromadb.utils import embedding_functions
 # create the open-source embedding function
 
 # embedding_function = SentenceTransformerEmbeddings(model_name="paraphrase-multilingual-mpnet-base-v2")
-embedding_function = YandexGptEmbeddingFunction(iam_token="t1.9euelZrKlJCenMnNz5aYy5SUzpPMz-3rnpWaipPGk5Cbm86UlpHJys_Mj5rl8_dKBGFO-e8EJQZy_t3z9wozXk757wQlBnL-zef1656VmpGTjpqdjsrOi5ySyZiRzJme7_zF656VmpGTjpqdjsrOi5ySyZiRzJme.5saOlFwfsZUUL4EBe7oBJMic3V0NN11bVw2lW5aTSw0z-TL5VjmNVh6fL8zxsAD-Z6QQ3UTY--6uaBSDLgurDw", folder_id="b1gmokkhlfagg82cirvf")
 
 CHROMA_PATH = "chroma"
 DATA_PATH = "../docs"
 
 
 def main():
+
     generate_data_store()
 
 
@@ -99,6 +124,9 @@ def split_text(documents: list[Document]):
 
 
 def save_to_chroma(chunks: list[Document]):
+    embedding_function = YandexGptEmbeddingFunction(
+        iam_token="t1.9euelZrKlJCenMnNz5aYy5SUzpPMz-3rnpWaipPGk5Cbm86UlpHJys_Mj5rl8_dKBGFO-e8EJQZy_t3z9wozXk757wQlBnL-zef1656VmpGTjpqdjsrOi5ySyZiRzJme7_zF656VmpGTjpqdjsrOi5ySyZiRzJme.5saOlFwfsZUUL4EBe7oBJMic3V0NN11bVw2lW5aTSw0z-TL5VjmNVh6fL8zxsAD-Z6QQ3UTY--6uaBSDLgurDw",
+        folder_id="b1gmokkhlfagg82cirvf")
     # Clear out the database first.
     if os.path.exists(CHROMA_PATH):
         shutil.rmtree(CHROMA_PATH)
