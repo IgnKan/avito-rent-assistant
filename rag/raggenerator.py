@@ -11,6 +11,7 @@ from loguru import logger
 import os
 import shutil
 
+
 class YandexGptEmbeddingFunction(EmbeddingFunction):
     def __call__(self, input: Documents) -> Embeddings:
 
@@ -32,6 +33,7 @@ class YandexGptEmbeddingFunction(EmbeddingFunction):
             "text": text
         }
         res = requests.post("https://llm.api.cloud.yandex.net/llm/v1alpha/embedding",
+
                             json=j, headers=self.headers)
         vec = res.json()['embedding']
         return vec
@@ -81,16 +83,16 @@ class YandexGptEmbeddingFunction(EmbeddingFunction):
 
 
 from chromadb.utils import embedding_functions
+
 # create the open-source embedding function
 
-# embedding_function = SentenceTransformerEmbeddings(model_name="paraphrase-multilingual-mpnet-base-v2")
+
 
 CHROMA_PATH = "chroma"
 DATA_PATH = "../docs"
 
 
 def main():
-
     generate_data_store()
 
 

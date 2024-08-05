@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>avito.schema.rating package &mdash; avito-rent-bot 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            avito-rent-bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">avito.schema.rating package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-avito.schema.rating.methods">avito.schema.rating.methods module</a><ul>
+<li><a class="reference internal" href="#avito.schema.rating.methods.GetRatingsInfo"><code class="docutils literal notranslate"><span class="pre">GetRatingsInfo</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.rating.methods.GetRatingsInfo.model_config"><code class="docutils literal notranslate"><span class="pre">GetRatingsInfo.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.methods.GetRatingsInfo.model_fields"><code class="docutils literal notranslate"><span class="pre">GetRatingsInfo.model_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-avito.schema.rating.models">avito.schema.rating.models module</a><ul>
+<li><a class="reference internal" href="#avito.schema.rating.models.Rating"><code class="docutils literal notranslate"><span class="pre">Rating</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.rating.models.Rating.model_config"><code class="docutils literal notranslate"><span class="pre">Rating.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Rating.model_fields"><code class="docutils literal notranslate"><span class="pre">Rating.model_fields</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Rating.reviews_count"><code class="docutils literal notranslate"><span class="pre">Rating.reviews_count</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Rating.reviews_with_score_count"><code class="docutils literal notranslate"><span class="pre">Rating.reviews_with_score_count</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Rating.score"><code class="docutils literal notranslate"><span class="pre">Rating.score</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.rating.models.RatingInfo"><code class="docutils literal notranslate"><span class="pre">RatingInfo</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.rating.models.RatingInfo.is_enabled"><code class="docutils literal notranslate"><span class="pre">RatingInfo.is_enabled</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.RatingInfo.model_config"><code class="docutils literal notranslate"><span class="pre">RatingInfo.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.RatingInfo.model_fields"><code class="docutils literal notranslate"><span class="pre">RatingInfo.model_fields</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.RatingInfo.rating"><code class="docutils literal notranslate"><span class="pre">RatingInfo.rating</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Stage"><code class="docutils literal notranslate"><span class="pre">Stage</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.rating.models.Stage.DONE"><code class="docutils literal notranslate"><span class="pre">Stage.DONE</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Stage.FELL_THROUGH"><code class="docutils literal notranslate"><span class="pre">Stage.FELL_THROUGH</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Stage.NOT_AGREE"><code class="docutils literal notranslate"><span class="pre">Stage.NOT_AGREE</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Stage.NOT_COMMUNICATE"><code class="docutils literal notranslate"><span class="pre">Stage.NOT_COMMUNICATE</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Status"><code class="docutils literal notranslate"><span class="pre">Status</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.rating.models.Status.MODERATION"><code class="docutils literal notranslate"><span class="pre">Status.MODERATION</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Status.PUBLISHED"><code class="docutils literal notranslate"><span class="pre">Status.PUBLISHED</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.rating.models.Status.REJECTED"><code class="docutils literal notranslate"><span class="pre">Status.REJECTED</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-avito.schema.rating">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">avito-rent-bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">avito.schema.rating package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/avito.schema.rating.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="avito-schema-rating-package">
+<h1>avito.schema.rating package<a class="headerlink" href="#avito-schema-rating-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-avito.schema.rating.methods">
+<span id="avito-schema-rating-methods-module"></span><h2>avito.schema.rating.methods module<a class="headerlink" href="#module-avito.schema.rating.methods" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.rating.methods.GetRatingsInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.rating.methods.</span></span><span class="sig-name descname"><span class="pre">GetRatingsInfo</span></span><a class="headerlink" href="#avito.schema.rating.methods.GetRatingsInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoMethod[RatingInfo]</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.methods.GetRatingsInfo.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.rating.methods.GetRatingsInfo.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.methods.GetRatingsInfo.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.rating.methods.GetRatingsInfo.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-avito.schema.rating.models">
+<span id="avito-schema-rating-models-module"></span><h2>avito.schema.rating.models module<a class="headerlink" href="#module-avito.schema.rating.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Rating">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.rating.models.</span></span><span class="sig-name descname"><span class="pre">Rating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reviewsCount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reviewsWithScoreCount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">score</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.rating.models.Rating" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="avito.base.html#avito.base.models.AvitoObject" title="avito.base.models.AvitoObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoObject</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Rating.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.rating.models.Rating.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Rating.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'reviews_count':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True,</span> <span class="pre">alias='reviewsCount',</span> <span class="pre">alias_priority=2,</span> <span class="pre">description='Общее</span> <span class="pre">количество</span> <span class="pre">активных</span> <span class="pre">отзывов',</span> <span class="pre">json_schema_extra={'example':</span> <span class="pre">21}),</span> <span class="pre">'reviews_with_score_count':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True,</span> <span class="pre">alias='reviewsWithScoreCount',</span> <span class="pre">alias_priority=2,</span> <span class="pre">description='Количество</span> <span class="pre">активных</span> <span class="pre">отзывов,</span> <span class="pre">влияющих</span> <span class="pre">на</span> <span class="pre">формирование</span> <span class="pre">рейтинга',</span> <span class="pre">json_schema_extra={'example':</span> <span class="pre">12}),</span> <span class="pre">'score':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=True,</span> <span class="pre">description='Оценка</span> <span class="pre">рейтинга',</span> <span class="pre">json_schema_extra={'example':</span> <span class="pre">4.3})}</span></em><a class="headerlink" href="#avito.schema.rating.models.Rating.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Rating.reviews_count">
+<span class="sig-name descname"><span class="pre">reviews_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#avito.schema.rating.models.Rating.reviews_count" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Rating.reviews_with_score_count">
+<span class="sig-name descname"><span class="pre">reviews_with_score_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#avito.schema.rating.models.Rating.reviews_with_score_count" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Rating.score">
+<span class="sig-name descname"><span class="pre">score</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#avito.schema.rating.models.Rating.score" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.rating.models.RatingInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.rating.models.</span></span><span class="sig-name descname"><span class="pre">RatingInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isEnabled</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#avito.schema.rating.models.Rating" title="avito.schema.rating.models.Rating"><span class="pre">Rating</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.rating.models.RatingInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="avito.base.html#avito.base.models.AvitoObject" title="avito.base.models.AvitoObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoObject</span></code></a></p>
+<p>Рейтинг</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.RatingInfo.is_enabled">
+<span class="sig-name descname"><span class="pre">is_enabled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#avito.schema.rating.models.RatingInfo.is_enabled" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.RatingInfo.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.rating.models.RatingInfo.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.RatingInfo.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'is_enabled':</span> <span class="pre">FieldInfo(annotation=bool,</span> <span class="pre">required=True,</span> <span class="pre">alias='isEnabled',</span> <span class="pre">alias_priority=2,</span> <span class="pre">description='Включен</span> <span class="pre">ли</span> <span class="pre">рейтинг',</span> <span class="pre">json_schema_extra={'example':</span> <span class="pre">True}),</span> <span class="pre">'rating':</span> <span class="pre">FieldInfo(annotation=Union[Rating,</span> <span class="pre">NoneType],</span> <span class="pre">required=False)}</span></em><a class="headerlink" href="#avito.schema.rating.models.RatingInfo.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.RatingInfo.rating">
+<span class="sig-name descname"><span class="pre">rating</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#avito.schema.rating.models.Rating" title="avito.schema.rating.models.Rating"><span class="pre">Rating</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.rating.models.RatingInfo.rating" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Stage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.rating.models.</span></span><span class="sig-name descname"><span class="pre">Stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.rating.models.Stage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></p>
+<dl class="simple">
+<dt>Стадия сделки:</dt><dd><ul class="simple">
+<li><p><cite>done</cite> - Сделка состоялась</p></li>
+<li><p><cite>fell_through</cite> - Сделка сорвалсь</p></li>
+<li><p><cite>not_agree</cite> - Не договорились</p></li>
+<li><p><cite>not_communicate</cite> - Не общались</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Stage.DONE">
+<span class="sig-name descname"><span class="pre">DONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'done'</span></em><a class="headerlink" href="#avito.schema.rating.models.Stage.DONE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Stage.FELL_THROUGH">
+<span class="sig-name descname"><span class="pre">FELL_THROUGH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fell_through'</span></em><a class="headerlink" href="#avito.schema.rating.models.Stage.FELL_THROUGH" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Stage.NOT_AGREE">
+<span class="sig-name descname"><span class="pre">NOT_AGREE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'not_agree'</span></em><a class="headerlink" href="#avito.schema.rating.models.Stage.NOT_AGREE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Stage.NOT_COMMUNICATE">
+<span class="sig-name descname"><span class="pre">NOT_COMMUNICATE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'not_communicate'</span></em><a class="headerlink" href="#avito.schema.rating.models.Stage.NOT_COMMUNICATE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Status">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.rating.models.</span></span><span class="sig-name descname"><span class="pre">Status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.rating.models.Status" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">StrEnum</span></code></p>
+<dl class="simple">
+<dt>Статус ответа:</dt><dd><ul class="simple">
+<li><p><cite>moderation</cite> - на модерации</p></li>
+<li><p><cite>published</cite> - опубликован</p></li>
+<li><p><cite>rejected</cite> - отклонен</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Status.MODERATION">
+<span class="sig-name descname"><span class="pre">MODERATION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'moderation'</span></em><a class="headerlink" href="#avito.schema.rating.models.Status.MODERATION" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Status.PUBLISHED">
+<span class="sig-name descname"><span class="pre">PUBLISHED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'published'</span></em><a class="headerlink" href="#avito.schema.rating.models.Status.PUBLISHED" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.rating.models.Status.REJECTED">
+<span class="sig-name descname"><span class="pre">REJECTED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'rejected'</span></em><a class="headerlink" href="#avito.schema.rating.models.Status.REJECTED" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-avito.schema.rating">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-avito.schema.rating" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, IgnKan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

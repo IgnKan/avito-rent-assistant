@@ -16,7 +16,7 @@ from datetime import datetime
 from langchain_community.vectorstores import Chroma
 from langchain.evaluation import load_evaluator
 from langchain_community.embeddings import SentenceTransformerEmbeddings
-from rag.RAGGenerator import YandexGptEmbeddingFunction
+from rag.raggenerator import YandexGptEmbeddingFunction
 
 
 CHROMA_PATH = "rag/chroma"
@@ -26,7 +26,7 @@ class ProfileStatesGroup(enum.Enum):
 
     get_rent_date = 6
     confirm_rent_date = 7
-    get_rent_people_number = 8
+    get_people_number = 8
     get_user_contact = 9
     confirm_rent = 10
     waiting_3_days = 11
@@ -36,6 +36,9 @@ class ProfileStatesGroup(enum.Enum):
 
 
 class HotelBot:
+    """ Bot class
+
+    """
     def __init__(self, avito: Avito, yandexgpt: YandexGPT, booking_data_base: BookingDataBase):
         self.avito = avito
         self.yandexgpt = yandexgpt
@@ -78,7 +81,7 @@ class HotelBot:
         self.message_from_user = message_text
         state = self.get_user_chat_position(user_id=message.author_id)
 
-        logger.debug("User_state - " + state)
+        logger.debug("User_state - " + "New user" if state == None else state)
 
         if state == None:
             with open('messages.json', 'r', encoding='utf-8') as file:
@@ -135,30 +138,37 @@ class HotelBot:
     def create_new_booking(self, command, state, user_id):
         user_booking = self.booking_data_base.find_user_booking(user_id=str(user_id))
 
-        if user_booking == -1:
+        if user_booking == None:
             self.bot_message = "Какой период вас интересует?"
             self.set_user_chat_position(user_id=user_id,
-                                                    chat_position=ProfileStatesGroup.get_rent_date.name)
+                                        chat_position=ProfileStatesGroup.get_rent_date.name)
         else:
-            self.bot_message = "Вы уже оформили бронирование. Сейчас каждый пользователь может иметь только одно бронирование. Ваше бронирование - " + str(user_booking)
+            self.bot_message = "Вы уже оформили бронирование. Сейчас каждый пользователь может иметь только одно бронирование. Ваше бронирование - " + str(
+                user_booking)
         self.was_handled = True
         return
 
     @message_handler(command='изменить бронирование', state=ProfileStatesGroup.chat_begin.name)
     def manage_booking(self, command, state, user_id):
         user_booking = self.booking_data_base.find_user_booking(user_id=str(user_id))
-        if user_booking == -1:
+        if user_booking is None:
             self.bot_message = "У вас нет бронирования, которое можно изменить. Может быть вы хотите сначала создать бронирование?"
         else:
             self.bot_message = "Ваше бронирование - "+ str(user_booking) + "\nЧто вы хотите изменить?"
 
+        self.was_handled = True
+        return
+
     @message_handler(command='удалить бронирование', state=ProfileStatesGroup.chat_begin.name)
     def delete_booking(self, command, state, user_id):
         user_booking = self.booking_data_base.find_user_booking(user_id=str(user_id))
-        if user_booking == -1:
+        if user_booking == None:
             self.bot_message = "У вас нет бронирования, которое можно удалить. Может быть вы хотите сначала создать бронирование?"
         else:
             self.bot_message = "Ваше бронирование - " + str(user_booking) + "\nВы уверены, что хотите его отменить?"
+
+        self.was_handled = True
+        return
 
     @message_handler(command="none", state=ProfileStatesGroup.get_rent_date.name)
     def get_rent_date(self, command, state, user_id):
@@ -180,8 +190,8 @@ class HotelBot:
         confirm = self.define_user_confirm(message_from_user=self.message_from_user)
         if confirm != '0':
             if confirm.find('да') != -1:
-                    self.bot_message = "Сколько будет людей?"
-                    self.set_user_chat_position(user_id=user_id, chat_position=ProfileStatesGroup.get_rent_people_number.name)
+                self.bot_message = "Сколько будет людей?"
+                self.set_user_chat_position(user_id=user_id, chat_position=ProfileStatesGroup.get_people_number.name)
             if confirm.find('нет') != -1:
                 self.bot_message = "Введите нужную вам дату. Если я распознаю ее не правильно введите ее по другому."
                 self.set_user_chat_position(user_id=user_id,
@@ -192,7 +202,7 @@ class HotelBot:
         self.was_handled = True
         return
 
-    @message_handler(command="none", state=ProfileStatesGroup.get_rent_people_number.name)
+    @message_handler(command="none", state=ProfileStatesGroup.get_people_number.name)
     def get_rent_people_number(self, command, state, user_id):
         people_number = self.get_people_number(message_from_user=command)
 
@@ -212,6 +222,15 @@ class HotelBot:
         self.was_handled = True
         return
 
+    @message_handler(command="none")
+    def support_dialog(self, command, state, user_id):
+
+        self.bot_message = self.support_user_dialog(self.message_from_user)
+        self.was_handled = True
+        return
+
+
+
     def start_pooling(self, command_from_user, state, user_id):
         self.start_assistant(command=command_from_user, state=state, user_id=user_id)
         self.off_assistant(command=command_from_user, state=state, user_id=user_id)
@@ -229,7 +248,18 @@ class HotelBot:
         self.confirm_rent_date(command='none', state=user_state, user_id=user_id)
         self.get_assistant_instruction(command=command_from_user, state=user_state, user_id=user_id)
 
+        self.support_dialog(command='none', state=user_state, user_id=user_id)
+
     def parse_date_range(self, date_range: str):
+        """ Parse string date range to primitive start_date and end_date
+
+        Args:
+            date_range: date in string format like "2020-04-05 for 2021-04-05"
+
+        Returns:
+            dict: key - start_date / last_date, value - date_value
+
+        """
         # Извлекаем даты начала и конца из строки
         start_date, end_date = date_range.split(" по ")
 
@@ -393,6 +423,23 @@ class HotelBot:
             {
                 "role": "user",
                 "text": "Число пользователя: " + message_from_user
+            }
+        ]
+        result = self.yandexgpt.make_request(message)
+        return result
+
+    def support_user_dialog(self, message_from_user: str):
+        with open('messages.json', 'r', encoding='utf-8') as file:
+            messages = json.load(file)
+        promt = messages['yandex_gpt']['support_user_dialog']
+        message = [
+            {
+                "role": "system",
+                "text": promt
+            },
+            {
+                "role": "user",
+                "text": "Сообщение клиента - " + message_from_user
             }
         ]
         result = self.yandexgpt.make_request(message)

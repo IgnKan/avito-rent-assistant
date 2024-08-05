@@ -16,7 +16,7 @@ import os
 import gspread
 from avito import Avito
 from googlesheets import BookingDataBase
-from rag.RAGGenerator import YandexGptEmbeddingFunction
+from rag.raggenerator import YandexGptEmbeddingFunction
 from yandexgpt import YandexGPT
 
 CLIENT_ID = os.getenv("CLIENT_ID")
@@ -88,6 +88,14 @@ async def on_startup():
 
 @app.post(WEBHOOK_PATH)
 async def bot_webhook(body = Body()):
+    """ EndPoint for webhook from avito
+
+    Args:
+        body: json body from response
+
+    Returns:
+
+    """
     webhook_message = body['payload']['value']
     received_message = WebhookMessage.model_validate(webhook_message, context={"avito": avito})
 
@@ -100,4 +108,4 @@ async def bot_webhook(body = Body()):
             await bot.process_message(message=received_message)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, debug=False)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

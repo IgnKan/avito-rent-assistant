@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>avito.schema.user package &mdash; avito-rent-bot 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            avito-rent-bot
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">avito.schema.user package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-avito.schema.user.methods">avito.schema.user.methods module</a><ul>
+<li><a class="reference internal" href="#avito.schema.user.methods.GetUserBalance"><code class="docutils literal notranslate"><span class="pre">GetUserBalance</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.user.methods.GetUserBalance.model_config"><code class="docutils literal notranslate"><span class="pre">GetUserBalance.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.methods.GetUserBalance.model_fields"><code class="docutils literal notranslate"><span class="pre">GetUserBalance.model_fields</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.methods.GetUserBalance.user_id"><code class="docutils literal notranslate"><span class="pre">GetUserBalance.user_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.user.methods.GetUserInfoSelf"><code class="docutils literal notranslate"><span class="pre">GetUserInfoSelf</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.user.methods.GetUserInfoSelf.model_config"><code class="docutils literal notranslate"><span class="pre">GetUserInfoSelf.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.methods.GetUserInfoSelf.model_fields"><code class="docutils literal notranslate"><span class="pre">GetUserInfoSelf.model_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-avito.schema.user.models">avito.schema.user.models module</a><ul>
+<li><a class="reference internal" href="#avito.schema.user.models.Balance"><code class="docutils literal notranslate"><span class="pre">Balance</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.user.models.Balance.bonus"><code class="docutils literal notranslate"><span class="pre">Balance.bonus</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.Balance.model_config"><code class="docutils literal notranslate"><span class="pre">Balance.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.Balance.model_fields"><code class="docutils literal notranslate"><span class="pre">Balance.model_fields</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.Balance.real"><code class="docutils literal notranslate"><span class="pre">Balance.real</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.user.models.RequestOperationsHistory"><code class="docutils literal notranslate"><span class="pre">RequestOperationsHistory</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.user.models.RequestOperationsHistory.date_time_from"><code class="docutils literal notranslate"><span class="pre">RequestOperationsHistory.date_time_from</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.RequestOperationsHistory.date_time_to"><code class="docutils literal notranslate"><span class="pre">RequestOperationsHistory.date_time_to</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.RequestOperationsHistory.model_config"><code class="docutils literal notranslate"><span class="pre">RequestOperationsHistory.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.RequestOperationsHistory.model_fields"><code class="docutils literal notranslate"><span class="pre">RequestOperationsHistory.model_fields</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistory"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistory</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistory.model_config"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistory.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistory.model_fields"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistory.model_fields</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistory.operations"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistory.operations</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.amount_bonus"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.amount_bonus</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.amount_rub"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.amount_rub</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.amount_total"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.amount_total</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.item_id"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.item_id</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.model_config"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.model_fields"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.model_fields</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.operation_name"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.operation_name</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.operation_type"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.operation_type</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.paid_at"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.paid_at</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.service_id"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.service_id</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.service_name"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.service_name</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.service_type"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.service_type</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem.updated_at"><code class="docutils literal notranslate"><span class="pre">ResponseOperationsHistoryItem.updated_at</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf</span></code></a><ul>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.email"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.email</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.get_chats"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.get_chats()</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.id"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.id</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.model_config"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.model_config</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.model_fields"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.model_fields</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.name"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.name</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.phone"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.phone</span></code></a></li>
+<li><a class="reference internal" href="#avito.schema.user.models.UserInfoSelf.profile_url"><code class="docutils literal notranslate"><span class="pre">UserInfoSelf.profile_url</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-avito.schema.user">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">avito-rent-bot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">avito.schema.user package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/avito.schema.user.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="avito-schema-user-package">
+<h1>avito.schema.user package<a class="headerlink" href="#avito-schema-user-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-avito.schema.user.methods">
+<span id="avito-schema-user-methods-module"></span><h2>avito.schema.user.methods module<a class="headerlink" href="#module-avito.schema.user.methods" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.user.methods.GetUserBalance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.user.methods.</span></span><span class="sig-name descname"><span class="pre">GetUserBalance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.user.methods.GetUserBalance" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoMethod[Balance]</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.methods.GetUserBalance.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.methods.GetUserBalance.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.methods.GetUserBalance.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'user_id':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#avito.schema.user.methods.GetUserBalance.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.methods.GetUserBalance.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#avito.schema.user.methods.GetUserBalance.user_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.user.methods.GetUserInfoSelf">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.user.methods.</span></span><span class="sig-name descname"><span class="pre">GetUserInfoSelf</span></span><a class="headerlink" href="#avito.schema.user.methods.GetUserInfoSelf" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoMethod[UserInfoSelf]</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.methods.GetUserInfoSelf.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.methods.GetUserInfoSelf.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.methods.GetUserInfoSelf.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.methods.GetUserInfoSelf.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-avito.schema.user.models">
+<span id="avito-schema-user-models-module"></span><h2>avito.schema.user.models module<a class="headerlink" href="#module-avito.schema.user.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.user.models.Balance">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.user.models.</span></span><span class="sig-name descname"><span class="pre">Balance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bonus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">real</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.user.models.Balance" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="avito.base.html#avito.base.models.AvitoObject" title="avito.base.models.AvitoObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoObject</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.Balance.bonus">
+<span class="sig-name descname"><span class="pre">bonus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#avito.schema.user.models.Balance.bonus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.Balance.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.models.Balance.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.Balance.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'bonus':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=True),</span> <span class="pre">'real':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#avito.schema.user.models.Balance.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.Balance.real">
+<span class="sig-name descname"><span class="pre">real</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#avito.schema.user.models.Balance.real" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.user.models.RequestOperationsHistory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.user.models.</span></span><span class="sig-name descname"><span class="pre">RequestOperationsHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dateTimeFrom</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dateTimeTo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.user.models.RequestOperationsHistory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="avito.base.html#avito.base.models.AvitoObject" title="avito.base.models.AvitoObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoObject</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.RequestOperationsHistory.date_time_from">
+<span class="sig-name descname"><span class="pre">date_time_from</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#avito.schema.user.models.RequestOperationsHistory.date_time_from" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.RequestOperationsHistory.date_time_to">
+<span class="sig-name descname"><span class="pre">date_time_to</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#avito.schema.user.models.RequestOperationsHistory.date_time_to" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.RequestOperationsHistory.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.models.RequestOperationsHistory.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.RequestOperationsHistory.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'date_time_from':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True,</span> <span class="pre">alias='dateTimeFrom',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'date_time_to':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True,</span> <span class="pre">alias='dateTimeTo',</span> <span class="pre">alias_priority=2)}</span></em><a class="headerlink" href="#avito.schema.user.models.RequestOperationsHistory.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.user.models.</span></span><span class="sig-name descname"><span class="pre">ResponseOperationsHistory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem" title="avito.schema.user.models.ResponseOperationsHistoryItem"><span class="pre">ResponseOperationsHistoryItem</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="avito.base.html#avito.base.models.AvitoObject" title="avito.base.models.AvitoObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoObject</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistory.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistory.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistory.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'operations':</span> <span class="pre">FieldInfo(annotation=List[ResponseOperationsHistoryItem],</span> <span class="pre">required=True)}</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistory.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistory.operations">
+<span class="sig-name descname"><span class="pre">operations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#avito.schema.user.models.ResponseOperationsHistoryItem" title="avito.schema.user.models.ResponseOperationsHistoryItem"><span class="pre">ResponseOperationsHistoryItem</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistory.operations" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.user.models.</span></span><span class="sig-name descname"><span class="pre">ResponseOperationsHistoryItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amountBonus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amountRub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amountTotal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itemId</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operationName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operationType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paidAt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serviceId</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serviceName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serviceType</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updatedAt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="avito.base.html#avito.base.models.AvitoObject" title="avito.base.models.AvitoObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoObject</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.amount_bonus">
+<span class="sig-name descname"><span class="pre">amount_bonus</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.amount_bonus" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.amount_rub">
+<span class="sig-name descname"><span class="pre">amount_rub</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.amount_rub" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.amount_total">
+<span class="sig-name descname"><span class="pre">amount_total</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.amount_total" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.item_id">
+<span class="sig-name descname"><span class="pre">item_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.item_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'amount_bonus':</span> <span class="pre">FieldInfo(annotation=Union[float,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">alias='amountBonus',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'amount_rub':</span> <span class="pre">FieldInfo(annotation=Union[float,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">alias='amountRub',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'amount_total':</span> <span class="pre">FieldInfo(annotation=float,</span> <span class="pre">required=True,</span> <span class="pre">alias='amountTotal',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'item_id':</span> <span class="pre">FieldInfo(annotation=Union[int,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">alias='itemId',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'operation_name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">alias='operationName',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'operation_type':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True,</span> <span class="pre">alias='operationType',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'paid_at':</span> <span class="pre">FieldInfo(annotation=Union[datetime,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">alias='paidAt',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'service_id':</span> <span class="pre">FieldInfo(annotation=Union[int,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">alias='serviceId',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'service_name':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">alias='serviceName',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'service_type':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False,</span> <span class="pre">alias='serviceType',</span> <span class="pre">alias_priority=2),</span> <span class="pre">'updated_at':</span> <span class="pre">FieldInfo(annotation=datetime,</span> <span class="pre">required=True,</span> <span class="pre">alias='updatedAt',</span> <span class="pre">alias_priority=2)}</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.operation_name">
+<span class="sig-name descname"><span class="pre">operation_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.operation_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.operation_type">
+<span class="sig-name descname"><span class="pre">operation_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.operation_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.paid_at">
+<span class="sig-name descname"><span class="pre">paid_at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.paid_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.service_id">
+<span class="sig-name descname"><span class="pre">service_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.service_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.service_name">
+<span class="sig-name descname"><span class="pre">service_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.service_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.service_type">
+<span class="sig-name descname"><span class="pre">service_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.service_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.ResponseOperationsHistoryItem.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">datetime</span></em><a class="headerlink" href="#avito.schema.user.models.ResponseOperationsHistoryItem.updated_at" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">avito.schema.user.models.</span></span><span class="sig-name descname"><span class="pre">UserInfoSelf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Annotated</span><span class="p"><span class="pre">[</span></span><span class="pre">Url</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">UrlConstraints</span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">max_length</span></span><span class="o"><span class="pre">=</span></span><span class="m"><span class="pre">2083</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">allowed_schemes</span></span><span class="o"><span class="pre">=</span></span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'http'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'https'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">host_required</span></span><span class="o"><span class="pre">=</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">default_host</span></span><span class="o"><span class="pre">=</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">default_port</span></span><span class="o"><span class="pre">=</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">default_path</span></span><span class="o"><span class="pre">=</span></span><span class="pre">None</span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="avito.base.html#avito.base.models.AvitoObject" title="avito.base.models.AvitoObject"><code class="xref py py-class docutils literal notranslate"><span class="pre">AvitoObject</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.email">
+<span class="sig-name descname"><span class="pre">email</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.email" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.get_chats">
+<span class="sig-name descname"><span class="pre">get_chats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="avito.html#avito.methods.GetChats" title="avito.methods.GetChats"><span class="pre">GetChats</span></a></span></span><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.get_chats" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.model_fields">
+<span class="sig-name descname"><span class="pre">model_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">FieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'email':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'id':</span> <span class="pre">FieldInfo(annotation=int,</span> <span class="pre">required=True),</span> <span class="pre">'name':</span> <span class="pre">FieldInfo(annotation=str,</span> <span class="pre">required=True),</span> <span class="pre">'phone':</span> <span class="pre">FieldInfo(annotation=Union[str,</span> <span class="pre">NoneType],</span> <span class="pre">required=False),</span> <span class="pre">'profile_url':</span> <span class="pre">FieldInfo(annotation=Union[Annotated[Url,</span> <span class="pre">UrlConstraints(max_length=2083,</span> <span class="pre">allowed_schemes=['http',</span> <span class="pre">'https'],</span> <span class="pre">host_required=None,</span> <span class="pre">default_host=None,</span> <span class="pre">default_port=None,</span> <span class="pre">default_path=None)],</span> <span class="pre">NoneType],</span> <span class="pre">required=False)}</span></em><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.model_fields" title="Link to this definition"></a></dt>
+<dd><p>Metadata about the fields defined on the model,
+mapping of field names to [<cite>FieldInfo</cite>][pydantic.fields.FieldInfo].</p>
+<p>This replaces <cite>Model.__fields__</cite> from Pydantic V1.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.phone">
+<span class="sig-name descname"><span class="pre">phone</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.phone" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="avito.schema.user.models.UserInfoSelf.profile_url">
+<span class="sig-name descname"><span class="pre">profile_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">HttpUrl</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#avito.schema.user.models.UserInfoSelf.profile_url" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-avito.schema.user">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-avito.schema.user" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, IgnKan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

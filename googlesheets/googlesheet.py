@@ -11,12 +11,32 @@ class BookingDataBase:
         self.had_change = False
 
     def add_booking(self, user_id, booking_start_date, booking_last_date, people_number, user_avito_name, user_contact):
+        """ Method for add booking on local copy of google docs. For accept changes (update
+        remote booking table) must be
+        call
+        method update_remote_database()
+
+        Args:
+            user_id:
+            booking_start_date:
+            booking_last_date:
+            people_number:
+            user_avito_name:
+            user_contact:
+
+        Returns:
+
+        """
         free_row = self.find_free_row()
         if not self.find_user_booking(user_id=user_id):
              self.wks.update([[user_avito_name, booking_start_date, booking_last_date, people_number, user_contact, user_id]], "A" + str(free_row))
         else:
             return -1
-
+    def find_user_booking(self, user_id):
+        for sublist in self.booking_records:
+            if user_id in sublist:
+                return sublist
+        return None
     def delete_booking(self, user_id, booking_start_date, booking_last_date):
 
         self.update_remote_database()
@@ -27,12 +47,6 @@ class BookingDataBase:
 
     def manage_booking(self, user_id, booking_date, new_booking_date, new_people_number, new_user_contact):
         pass
-
-    def find_user_booking(self, user_id):
-        for sublist in self.booking_records:
-            if user_id in sublist:
-                return sublist
-        return None
 
 
     def get_all_booking_records(self, ):
