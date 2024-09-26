@@ -139,4 +139,4 @@ dmypy.json
 cython_debug/
 
 # Idea files
-.idea
+.idea/
