@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "avito-rent-assistent"
+version = "0.1.0"
+description = ""
+authors = ["IgKan <108879625+SolidSnakeF141@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.0"
+loguru = "^0.7.2"
+uvicorn = "^0.30.6"
+langchain = "^0.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
